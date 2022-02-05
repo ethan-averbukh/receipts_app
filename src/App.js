@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import receipts from "./receiptsData";
+import React, { useState } from "react";
+import Receipts from "./Receipts/Receipts";
+import SearchReceipts from "./Form/SearchReceipts";
+import Title from "./Header/Title";
+import Buttons from './Buttons/Buttons';
 
 function App() {
+  const [allreceipts, setAllReceipts] = useState(receipts);
+  const [isPaid, setIsPaid] = useState(false);
+
+  const filterReceipt = (orderName) => {
+    const allreceiptsCopy = [...receipts];
+    
+      const foundOrder = allreceiptsCopy.filter(
+        (order) => order.person === orderName
+      );
+      console.log(foundOrder);
+      const updatedState = foundOrder;
+      setAllReceipts(updatedState);
+  };
+
+  const filterPaid = () => {
+    const allreceiptsCopy = [...receipts];
+    const paidReceipts = allreceiptsCopy.filter((item)=> item.paid === true);
+    setAllReceipts(paidReceipts);
+  }
+  const filterUnpaid = () => {
+    const allreceiptsCopy = [...receipts];
+  }
+  const resetAllReceipts = () => {
+    const allreceiptsCopy = [...receipts];
+    setAllReceipts(allreceiptsCopy);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Title title={"Korilla Receipts"} />
+      <SearchReceipts filterOrders={filterReceipt} />
+      <Buttons handleRestoreAll={resetAllReceipts} handleFilterPaid={filterPaid} handleFilterUnpaid={filterUnpaid} />
+      <Receipts personsOrders={allreceipts} />
     </div>
   );
 }
