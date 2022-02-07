@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 
+// Single order receipt recevies: Person name, Person order object, Person paid status, and paid event handler
 
-const Receipt = ({person, order, paid}) => {
-    
-
-    const handlePaid = () => {
-        
-    }
+const Receipt = ({person, order, paid, handlePaid}) => {
 
     return (
         <div className="receipt-card">
@@ -23,7 +19,7 @@ const Receipt = ({person, order, paid}) => {
                     <li>Sauce: {order.sauce}</li>
                     <li>Drink: {order.drink}</li>
                     <li>Cost: {order.cost}</li>
-                    <li onClick={handlePaid}>Paid: {paid.toString()}</li>
+                    <li onClick={()=>handlePaid(person)}>Paid: {paid.toString()}</li>
                 </ul>
             </div>
         </div>

@@ -7,12 +7,21 @@ import SearchReceipts from "./Form/SearchReceipts";
 import Title from "./Header/Title";
 import Buttons from './Buttons/Buttons';
 
+//Bad Practice for global variable. Keep variable in another file maybe?
+const allreceiptsCopy = [...receipts];
+
 function App() {
   const [allreceipts, setAllReceipts] = useState(receipts);
-  const [isPaid, setIsPaid] = useState(false);
 
+  const handlePaidStatus = (orderName) => {
+    const foundOrder = allreceiptsCopy.filter((item)=> item.person === orderName);
+    foundOrder.paid = !foundOrder.paid;
+    setAllReceipts(allreceiptsCopy);
+
+  }
+
+  // Filter receipts by persons order name. Receives User input value from Receipt.js
   const filterReceipt = (orderName) => {
-    const allreceiptsCopy = [...receipts];
     
       const foundOrder = allreceiptsCopy.filter(
         (order) => order.person === orderName
@@ -21,17 +30,14 @@ function App() {
       const updatedState = foundOrder;
       setAllReceipts(updatedState);
   };
-
-  const filterPaid = () => {
-    const allreceiptsCopy = [...receipts];
-    const paidReceipts = allreceiptsCopy.filter((item)=> item.paid === true);
-    setAllReceipts(paidReceipts);
+  // Filter receipts by order paid status. Receives User input value from Receipt.js
+  const filterPaid = (orderName, paidStatus) => {
+    
   }
-  const filterUnpaid = () => {
-    const allreceiptsCopy = [...receipts];
+  const filterUnpaid = (orderName) => {
+    const paidReceipts = allreceiptsCopy.filter((item)=> item.paid === false);
   }
   const resetAllReceipts = () => {
-    const allreceiptsCopy = [...receipts];
     setAllReceipts(allreceiptsCopy);
   }
 
@@ -40,7 +46,8 @@ function App() {
       <Title title={"Korilla Receipts"} />
       <SearchReceipts filterOrders={filterReceipt} />
       <Buttons handleRestoreAll={resetAllReceipts} handleFilterPaid={filterPaid} handleFilterUnpaid={filterUnpaid} />
-      <Receipts personsOrders={allreceipts} />
+      <Receipts personsOrders={allreceipts} 
+      hanldePaidUpdate={handlePaidStatus}/>
     </div>
   );
 }
